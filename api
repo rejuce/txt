@@ -1,0 +1,213 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "IDS3-Rest",
+    "version": "1.0.0",
+    "description": "A brand new API with no content.  Go nuts!"
+  },
+  "paths": {
+    "/cgi-bin/IDS3-Rest.elf": {
+      "get": {
+        "tags": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SEQINFO"
+          },
+          "": {
+            "$ref": "#/components/responses/SEQINFO"
+          }
+        },
+        "summary": "Get Sequence Info",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GET_SEQ_INFO",
+                "GET_IMG"
+              ]
+            },
+            "in": "query",
+            "name": "CMD",
+            "description": "GET_SEQ_INFO"
+          }
+        ],
+        "description": ""
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "Header": {
+        "title": "Root Type for Header",
+        "description": "",
+        "type": "object",
+        "example": {
+          "CMD": "CMDCode",
+          "HelpTxt": "some text",
+          "ProcState": "SUCCESS or FAILED"
+        },
+        "x-examples": {
+          "example-1": {
+            "CMD": "CMDCode",
+            "HelpTxt": "some text",
+            "ProcState": "OK or FAILED"
+          }
+        },
+        "properties": {
+          "CMD": {
+            "description": "fgfg",
+            "type": "string",
+            "example": "zrddfg"
+          },
+          "HelpTxt": {
+            "description": "example",
+            "type": "string",
+            "example": "exampletext"
+          },
+          "ProcState": {
+            "description": "OK  or FAILED",
+            "type": "string",
+            "example": "{ProcState=SUCCESS}"
+          }
+        },
+        "required": [
+          "CMD"
+        ]
+      },
+      "GET_SEQ_INFO": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "IDS3MainVersion": {
+            "type": "number"
+          },
+          "IDS3MeasVersion": {
+            "type": "number"
+          },
+          "LEDAdapter": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hasRegCam": {
+            "type": "boolean"
+          },
+          "sysFunction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sysType": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "IDS3MainVersion",
+          "IDS3MeasVersion",
+          "LEDAdapter",
+          "hasRegCam",
+          "sysFunction",
+          "sysType"
+        ],
+        "x-examples": {
+          "example-1": {
+            "IDS3MainVersion": 183,
+            "IDS3MeasVersion": 14,
+            "LEDAdapter": "Adapter5B",
+            "hasRegCam": false,
+            "sysFunction": "IDSXYZ",
+            "sysType": "IDSBogen"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ImageResponse": {
+        "content": {
+          "image/png": {},
+          "image/tiff": {}
+        },
+        "description": "send png"
+      },
+      "SEQINFO": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "description": "GET_SEQ_INFO CMD",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GET_SEQ_INFO"
+                    },
+                    "header": {
+                      "$ref": "#/components/schemas/Header"
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "header": {
+                      "$ref": "#/components/schemas/Header"
+                    }
+                  }
+                }
+              ],
+              "type": "object"
+            },
+            "examples": {
+              "example-1": {
+                "value": {
+                  "header": {
+                    "CMD": "CMDCode",
+                    "HelpTxt": "some text",
+                    "ProcState": "SUCCESS or FAILED"
+                  }
+                }
+              },
+              "example-2": {
+                "value": {
+                  "data": {
+                    "IDS3MainVersion": 0,
+                    "IDS3MeasVersion": 0,
+                    "LEDAdapter": "string",
+                    "hasRegCam": true,
+                    "sysFunction": "string",
+                    "sysType": "string"
+                  },
+                  "header": {
+                    "CMD": "CMDCode",
+                    "HelpTxt": "some text",
+                    "ProcState": "SUCCESS or FAILED"
+                  }
+                }
+              }
+            }
+          },
+          "image/png": {
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": {
+              "example-1": {
+                "value": {}
+              }
+            }
+          }
+        },
+        "description": "",
+        "headers": {}
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://172.25.201.33",
+      "description": "TestMK"
+    }
+  ]
+}
