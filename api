@@ -54,7 +54,7 @@
           "example-1": {
             "CMD": "CMDCode",
             "HelpTxt": "some text",
-            "ProcState": "OK or FAILED"
+            "ProcState": "SUCCESS or FAILED"
           }
         },
         "properties": {
@@ -69,7 +69,7 @@
             "example": "exampletext"
           },
           "ProcState": {
-            "description": "OK  or FAILED",
+            "description": "SUCCESS/FAILED",
             "type": "string",
             "example": "{ProcState=SUCCESS}"
           }
@@ -78,40 +78,40 @@
           "CMD"
         ]
       },
-      "GET_SEQ_INFO": {
-        "description": "",
+      "GET_SEQ_INFO_data": {
         "type": "object",
+        "title": "Root Type for GET_SEQ_INFO_data",
+        "description": "",
+        "example": {
+          "IDS3MainVersion": 183,
+          "IDS3MeasVersion": 14,
+          "LEDAdapter": "Adapter5B",
+          "hasRegCam": false,
+          "sysFunction": "IDSXYZ",
+          "sysType": "IDSBogen"
+        },
         "properties": {
           "IDS3MainVersion": {
-            "type": "number"
+            "format": "int32",
+            "type": "integer"
           },
           "IDS3MeasVersion": {
-            "type": "number"
+            "format": "int32",
+            "type": "integer"
           },
           "LEDAdapter": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "hasRegCam": {
             "type": "boolean"
           },
           "sysFunction": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "sysType": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           }
         },
-        "required": [
-          "IDS3MainVersion",
-          "IDS3MeasVersion",
-          "LEDAdapter",
-          "hasRegCam",
-          "sysFunction",
-          "sysType"
-        ],
         "x-examples": {
           "example-1": {
             "IDS3MainVersion": 183,
@@ -138,18 +138,18 @@
             "schema": {
               "oneOf": [
                 {
-                  "description": "GET_SEQ_INFO CMD",
                   "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/GET_SEQ_INFO"
-                    },
                     "header": {
                       "$ref": "#/components/schemas/Header"
                     }
                   }
                 },
                 {
+                  "description": "GET_SEQ_INFO CMD",
                   "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GET_SEQ_INFO_data"
+                    },
                     "header": {
                       "$ref": "#/components/schemas/Header"
                     }
@@ -159,8 +159,16 @@
               "type": "object"
             },
             "examples": {
-              "example-1": {
+              "CMD=GET_SEQ_SEQ": {
                 "value": {
+                  "data": {
+                    "IDS3MainVersion": "2183",
+                    "IDS3MeasVersion": "14",
+                    "LEDAdapter": "Adapter5B",
+                    "hasRegCam": "false",
+                    "sysFunction": "IDSXYZ",
+                    "sysType": "IDSBogen"
+                  },
                   "header": {
                     "CMD": "CMDCode",
                     "HelpTxt": "some text",
@@ -168,16 +176,8 @@
                   }
                 }
               },
-              "example-2": {
+              "example-1": {
                 "value": {
-                  "data": {
-                    "IDS3MainVersion": 0,
-                    "IDS3MeasVersion": 0,
-                    "LEDAdapter": "string",
-                    "hasRegCam": true,
-                    "sysFunction": "string",
-                    "sysType": "string"
-                  },
                   "header": {
                     "CMD": "CMDCode",
                     "HelpTxt": "some text",
